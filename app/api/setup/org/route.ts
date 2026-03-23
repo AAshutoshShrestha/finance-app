@@ -24,17 +24,11 @@ export async function POST(req: Request) {
       );
     }
 
-    const org = await prisma.organization.create({
+    await prisma.organization.create({
       data: {
+        userId:user.id,
         name,
         slug,
-      },
-    });
-
-    await prisma.membership.create({
-      data: {
-        userId: user.id,
-        organizationId: org.id,
       },
     });
 
