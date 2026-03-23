@@ -1,10 +1,16 @@
-"use client"
+"use client";
 import { KPICard } from "@/Components/Cards/KpiCards.component";
 import { DashboardKPI } from "@/lib/const.interface";
-import { BiAccessibility, BiTrendingDown, BiTrendingUp, BiWalletAlt } from "react-icons/bi";
+import {
+	BiAccessibility,
+	BiTrendingDown,
+	BiTrendingUp,
+	BiWalletAlt,
+} from "react-icons/bi";
+
 import { useState } from "react";
 
-export default function DashboardPage({params}: {params:{organization:string}}) {
+export default function DashboardPage() {
 	const [kpis] = useState<DashboardKPI>({
 		total_income: 1250000,
 		total_expense: 850000,
@@ -21,7 +27,7 @@ export default function DashboardPage({params}: {params:{organization:string}}) 
 			<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 				<div>
 					<h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-						Dashboard for {params.organization}
+						Dashboard
 					</h1>
 					<p className="text-gray-500 dark:text-gray-400 mt-1">
 						Welcome back! Here&apos;s your financial overview.

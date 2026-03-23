@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/(Setup)/add-organization/page.tsx
 "use client";
 
@@ -32,7 +33,7 @@ export default function AddOrganization() {
       if (!res.ok) throw new Error(data.error);
 
       toast.success("Organization created");
-      router.push("/login");
+      router.push("/");
     } catch (err: any) {
       toast.error(err.message || "Failed");
     } finally {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/(Setup)/register/page.tsx
 "use client";
 
@@ -35,7 +36,7 @@ export default function RegisterPage() {
 			if (!res.ok) throw new Error(data.error);
 
 			toast.success("Admin created");
-			router.push("/setup/add-organization");
+			router.push("/add-organization");
 		} catch (err: any) {
 			toast.error(err.message || "Failed");
 		} finally {

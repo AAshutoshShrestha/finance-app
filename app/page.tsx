@@ -17,7 +17,7 @@ export default async function Home() {
 			<h1 className="text-2xl mb-4">Organizations</h1>
 
 			<Link
-				href="/setup/add-organization"
+				href="/add-organization"
 				className="bg-black text-white px-4 py-2"
 			>
 				Add Organization
@@ -25,7 +25,7 @@ export default async function Home() {
 
 			<div className="grid grid-cols-3 gap-4 mt-6">
 				{orgs.map((org) => (
-					<div key={org.id} className="border p-4 rounded">
+					<div key={org.userId} className="border p-4 rounded">
 						<h2 className="text-lg">{org.name}</h2>
 
 						<Link

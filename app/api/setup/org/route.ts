@@ -1,43 +1,66 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // app/api/setup/org/route.ts
+
 import { prisma } from "@/lib/prisma/prisma";
 import slugify from "slugify";
 
 export async function POST(req: Request) {
-  try {
-    const { name } = await req.json();
+	try {
+		const body = await req.json();
+		const name = body?.name?.trim();
 
-    if (!name) {
-      return Response.json(
-        { error: "Name required" },
-        { status: 400 }
-      );
-    }
+		if (!name) {
+			return Response.json({ error: "Name required" }, { status: 400 });
+		}
 
-    const slug = slugify(name, { lower: true });
+		// base slug
+		const baseSlug = slugify(name, {
+			lower: true,
+			strict: true,
+			trim: true,
+		});
 
-    const user = await prisma.user.findFirst();
+		// ensure unique slug (efficient query)
+		const existing = await prisma.organization.findMany({
+			where: {
+				slug: {
+					startsWith: baseSlug,
+				},
+			},
+			select: { slug: true },
+		});
 
-    if (!user) {
-      return Response.json(
-        { error: "No admin user found" },
-        { status: 400 }
-      );
-    }
+		let slug = baseSlug;
 
-    await prisma.organization.create({
-      data: {
-        userId:user.id,
-        name,
-        slug,
-      },
-    });
+		if (existing.length > 0) {
+			const numbers = existing.map((o) => {
+				const match = o.slug.match(/-(\d+)$/);
+				return match ? parseInt(match[1], 10) : 0;
+			});
 
-    return Response.json({ success: true });
+			const next = Math.max(0, ...numbers) + 1;
+			slug = `${baseSlug}-${next}`;
+		}
 
-  } catch (error) {
-    return Response.json(
-      { error: "Server error" },
-      { status: 500 }
-    );
-  }
+		const user = await prisma.user.findFirst();
+
+		if (!user) {
+			return Response.json(
+				{ error: "No admin user found" },
+				{ status: 400 },
+			);
+		}
+
+		await prisma.organization.create({
+			data: {
+				userId: user.id,
+				name,
+				slug,
+			},
+		});
+
+		return Response.json({ success: true });
+	} catch (error) {
+		return Response.json({ error: "Server error" }, { status: 500 });
+	}
 }

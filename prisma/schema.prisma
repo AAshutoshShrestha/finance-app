@@ -9,16 +9,17 @@ datasource db {
 }
 
 model User {
-    id            String   @id @default(cuid())
-    email         String   @unique
-    password      String
-    createdAt     DateTime @default(now())
+    id        String   @id @default(cuid())
+    email     String   @unique
+    password  String
+    createdAt DateTime @default(now())
 
-    organization Organization?
+    organizations Organization[]
 }
 
 model Organization {
-    userId        String   @id
+    id        String   @id @default(cuid())
+    userId    String
     name      String
     slug      String   @unique
     createdAt DateTime @default(now())
