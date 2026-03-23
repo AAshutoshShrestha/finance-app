@@ -11,7 +11,7 @@ services:
       - .env
     environment:
       NODE_ENV: production
-      DATABASE_URL: "postgresql://postgres.gyogezakjnrdoqjizqbe:M43XUPTf/Td2*eL@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+      DATABASE_URL: "Database_url"
     volumes:
       - app_uploads:/app/uploads
 
