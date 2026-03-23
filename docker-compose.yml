@@ -1,19 +1,10 @@
-version: "3.9"
-
+# docker-compose.yml
 services:
   app:
-    image: yourdockerhub/finance-app:latest
+    image: AashutoshShrestha/finance-app:latest
     container_name: finance-app
     restart: unless-stopped
     ports:
       - "3000:3000"
     env_file:
       - .env
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: "Database_url"
-    volumes:
-      - app_uploads:/app/uploads
-
-volumes:
-  app_uploads:
