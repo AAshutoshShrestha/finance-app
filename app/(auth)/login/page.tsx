@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app\(auth)\login\page.tsx
 "use client";
 
@@ -25,8 +26,8 @@ export default function LoginPage() {
       } else {
         toast.error("Invalid credentials");
       }
-    } catch (err) {
-      toast.error("Something went wrong");
+    } catch (error:any) {
+      toast.error("Something went wrong," + error.message);
     }
 
     setLoading(false);
@@ -44,7 +45,7 @@ export default function LoginPage() {
         </h1>
 
         {/* Divider */}
-        <div className="h-[3px] bg-black w-full my-6"></div>
+        <div className="h-0.75 bg-black w-full my-6"></div>
 
         {/* Email */}
         <input
@@ -67,7 +68,7 @@ export default function LoginPage() {
           disabled={loading}
           className="w-full mt-6 border-4 border-black bg-black text-white font-black text-lg py-3 
           hover:bg-white hover:text-black transition 
-          active:translate-x-[3px] active:translate-y-[3px] active:shadow-none
+          active:translate-x-0.75 active:translate-y-0.75 active:shadow-none
           shadow-[6px_6px_0px_#000]"
         >
           {loading ? "LOADING..." : "LOGIN"}
