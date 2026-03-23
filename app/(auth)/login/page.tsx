@@ -1,54 +1,79 @@
+// app\(auth)\login\page.tsx
 "use client";
 
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaSignInAlt } from "react-icons/fa";
 
-export default function LoginPage(){
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
+  const login = async () => {
+    setLoading(true);
 
-  const login = async ()=>{
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
 
-    const res = await fetch("/api/auth/login",{
-      method:"POST",
-      body: JSON.stringify({email,password})
-    });
-
-    if(res.ok){
-      toast.success("Logged in");
-      window.location.href="/app";
-    }else{
-      toast.error("Invalid credentials");
+      if (res.ok) {
+        toast.success("Logged in");
+        window.location.href = "/app";
+      } else {
+        toast.error("Invalid credentials");
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
     }
-  }
 
-  return(
-    <div className="p-10 max-w-md mx-auto">
+    setLoading(false);
+  };
 
-      <h1 className="flex gap-2 text-xl">
-        <FaSignInAlt/> Login
-      </h1>
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center px-6">
 
-      <input
-        className="border p-2 w-full mt-4"
-        onChange={e=>setEmail(e.target.value)}
-      />
+      <div className="w-full max-w-md border-4 border-black shadow-[8px_8px_0px_#000] p-8">
 
-      <input
-        type="password"
-        className="border p-2 w-full mt-2"
-        onChange={e=>setPassword(e.target.value)}
-      />
+        {/* Title */}
+        <h1 className="flex items-center gap-3 text-3xl font-black uppercase tracking-tight">
+          <FaSignInAlt className="text-2xl" />
+          Login
+        </h1>
 
-      <button
-        onClick={login}
-        className="bg-black text-white p-2 mt-4 w-full"
-      >
-        Login
-      </button>
+        {/* Divider */}
+        <div className="h-[3px] bg-black w-full my-6"></div>
 
+        {/* Email */}
+        <input
+          placeholder="EMAIL"
+          className="w-full border-4 border-black p-3 text-lg font-bold placeholder:text-black outline-none focus:bg-black focus:text-white transition"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        {/* Password */}
+        <input
+          type="password"
+          placeholder="PASSWORD"
+          className="w-full border-4 border-black p-3 text-lg font-bold mt-4 placeholder:text-black outline-none focus:bg-black focus:text-white transition"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        {/* Button */}
+        <button
+          onClick={login}
+          disabled={loading}
+          className="w-full mt-6 border-4 border-black bg-black text-white font-black text-lg py-3 
+          hover:bg-white hover:text-black transition 
+          active:translate-x-[3px] active:translate-y-[3px] active:shadow-none
+          shadow-[6px_6px_0px_#000]"
+        >
+          {loading ? "LOADING..." : "LOGIN"}
+        </button>
+
+      </div>
     </div>
-  )
+  );
 }
